@@ -1,0 +1,1 @@
+This project used the MIMIC-III dataset. All data and information regarding a patients health history is preserved and kept private. Visualizations showcase general statistics and do not represent an individual patients medical history and/or background.
