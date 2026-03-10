@@ -51,9 +51,7 @@ Access to MIMIC-III requires credentialed access through PhysioNet: https://phys
 ## External Tools
 
 ### LlamaParse
-**What it is:** A document parsing API from LlamaIndex that converts unstructured documents (PDFs, clinical notes) into clean, structured text.
-
-**What it's used for here:** MIMIC-III's `NOTEEVENTS` table contains raw discharge summaries — dense free-text documents with inconsistent formatting, abbreviations, and section headers. LlamaParse normalises this text before it's sent to Claude for structured feature extraction.
+MIMIC-III's `NOTEEVENTS` table contains raw discharge summaries — dense free-text documents with inconsistent formatting, abbreviations, and section headers. LlamaParse normalises this text before it's sent to Claude for structured feature extraction.
 
 Specifically, `llamaparse_extractor.py` uses LlamaParse to:
 - Clean whitespace, section headers, and table artifacts in each discharge summary
@@ -75,14 +73,10 @@ Without LlamaParse, raw MIMIC note text passed directly to an LLM produces noisi
 | `NOTE_COMORBIDITY_MENTIONS` | Count of conditions mentioned in free text (supplements ICD codes) |
 | `NOTE_RISK_KEYWORDS` | Count of phrases like "uncontrolled", "poorly managed", "non-adherent" |
 
-**Sign up:** https://cloud.llamaindex.ai
-
 ---
 
 ### Firecrawl
-**What it is:** A web scraping and crawling API that converts any public webpage into clean markdown, purpose-built for use as LLM context.
-
-**What it's used for here:** The MIMIC dataset captures what happened during a hospitalisation, but not what *should* have happened according to current clinical standards. Firecrawl bridges this gap by pulling two types of external knowledge:
+The MIMIC dataset captures what happened during a hospitalisation, but not what *should* have happened according to current clinical standards. Firecrawl bridges this gap by pulling two types of external knowledge:
 
 **1. Drug interaction data (DrugBank)**
 `firecrawl_enricher.py` scrapes DrugBank pages for the most commonly prescribed drugs in the dataset. Claude then extracts interaction risk keywords from the scraped content. These are matched against each patient's prescription list to produce a `SCRAPED_INTERACTION_RISK_SCORE` — a signal the structured PRESCRIPTIONS table alone cannot provide.
@@ -103,8 +97,6 @@ Firecrawl scrapes condition-specific guideline pages (heart failure, COPD, diabe
 | `CMS_NATIONAL_AVG_READMIT_RATE` | National 30-day readmission benchmark for this diagnosis |
 | `GUIDELINE_RISK_TIER` | 1=Low / 2=Moderate / 3=High, based on scraped ACC/AHA guidelines |
 | `GUIDELINE_KEY_RISKS_COUNT` | Count of evidence-based risk factors identified from guidelines |
-
-**Sign up:** https://firecrawl.dev
 
 ---
 
